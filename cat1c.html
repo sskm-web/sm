@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +6,7 @@
     <title>CAT1C</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <style>
         /* Add your styles here */
         @keyframes flashText {
@@ -113,6 +113,8 @@
 <body>
     <div class="center">
         <button id="download-button">Download as PDF</button>
+        <button id="save-button">Save to Text File</button>
+        <button id="load-button">Load from Text File</button>
     </div>
 
     <table class="back" border="10">
@@ -629,53 +631,89 @@
     </script>
     
     <script>
-    function saveData() {
-        $("input[type='number']").each(function() {
-            localStorage.setItem(this.id, $(this).val());
-        });
-        $("input[type='text']").each(function() {
-            localStorage.setItem(this.id, $(this).val());
-        });
+        // Function to save data to a text file
+        function saveDataToFile() {
+            var dataToSave = "";
 
-
-        $("span[contenteditable]").each(function() {
-            localStorage.setItem(this.id, $(this).text());
-        });
-    }
-
-    function loadData() {
-        $("input[type='number']").each(function() {
-            var value = localStorage.getItem(this.id);
-            if (value !== null) {
-                $(this).val(value);
+            // Iterate over input fields and contenteditable spans
+            var inputElements = document.querySelectorAll("input[type='number']");
+            for (var i = 0; i < inputElements.length; i++) {
+                var id = inputElements[i].id;
+                var value = inputElements[i].value;
+                dataToSave += id + ": " + value + "\n";
             }
-        });
-        $("input[type='text']").each(function() {
-            var value = localStorage.getItem(this.id);
-            if (value !== null) {
-                $(this).val(value);
+
+            // Iterate over input fields and contenteditable spans
+            var inputElements = document.querySelectorAll("input[type='text']");
+            for (var i = 0; i < inputElements.length; i++) {
+                var id = inputElements[i].id;
+                var value = inputElements[i].value;
+                dataToSave += id + ": " + value + "\n";
             }
-        });
-
-
-        $("span[contenteditable]").each(function() {
-            var value = localStorage.getItem(this.id);
-            if (value !== null) {
-                $(this).text(value);
+            var contentEditableSpans = document.querySelectorAll("span[contenteditable]");
+            for (var i = 0; i < contentEditableSpans.length; i++) {
+                var id = contentEditableSpans[i].id;
+                var value = contentEditableSpans[i].textContent;
+                dataToSave += id + ": " + value + "\n";
             }
-        });
-    }
 
-    $(document).ready(function() {
-        loadData();
-        $(".floatNumberField").change(function() {
-            $(this).val(parseFloat($(this).val()).toFixed(2));
-        });
+            // Create a Blob object and trigger a download
+            var blob = new Blob([dataToSave], {
+                type: "text/plain;charset=utf-8"
+            });
+            saveAs(blob, "CAT1C.txt");
+        }
 
-        $("input[type='number'], input[type='text'], span[contenteditable]").on("input", function() {
-            saveData();
-        });
-    });
+        // Add event listener for the "Save" button
+        var saveButton = document.getElementById('save-button');
+        saveButton.addEventListener('click', saveDataToFile);
+
+        // Function to load data from a text file
+        function loadFileAsText() {
+            var fileInput = document.createElement('input');
+            fileInput.type = 'file';
+
+            fileInput.addEventListener('change', function () {
+                var file = fileInput.files[0];
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    var data = e.target.result;
+                    // Parse and populate the input fields and contenteditable spans here
+                    parseAndPopulateData(data);
+                };
+
+                reader.readAsText(file);
+            });
+
+            fileInput.click();
+        }
+
+        // Add event listener for the "Load Data" button
+        var loadButton = document.getElementById('load-button');
+        loadButton.addEventListener('click', loadFileAsText);
+
+        // Function to parse and populate data into the input fields and contenteditable spans
+        function parseAndPopulateData(data) {
+            var lines = data.split('\n');
+            for (var i = 0; i < lines.length; i++) {
+                var line = lines[i].trim();
+                var parts = line.split(':');
+                if (parts.length === 2) {
+                    var id = parts[0].trim();
+                    var value = parts[1].trim();
+                    var element = document.getElementById(id);
+                    if (element) {
+                        if (element.tagName === 'SPAN') {
+                            element.textContent = value;
+                        } else if (element.tagName === 'INPUT') {
+                            element.value = value;
+                        }
+                    }
+                }
+            }
+
+        }
 </script>
     
 </body>
