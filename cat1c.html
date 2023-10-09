@@ -152,7 +152,7 @@
                         <!-- Entry for (a) -->
                         <div class="table-controls">
                             <div class="table-title" onclick="toggleTable('tableA')">a) Updating of Courses/Curriculum Design:</div>
-                            <button class="remove-table-button" onclick="removeTable('tableA')">Remove Table</button>
+                            <button class="remove-table-button" onclick="removeTable('tableA')">Show/Hide Table</button>
                         </div>
                         <table id="tableA" class="hide" border="1">
                             <thead>
@@ -179,7 +179,7 @@
                         <!-- Entry for (b) -->
                         <div class="table-controls">
                             <div class="table-title" onclick="toggleTable('tableB')">b) Participation/Innovative – Interactive courses:</div>
-                            <button class="remove-table-button" onclick="removeTable('tableB')">Remove Table</button>
+                            <button class="remove-table-button" onclick="removeTable('tableB')">Show/Hide Table</button>
                         </div>
                         <table id="tableB" class="hide" border="1">
                             <thead>
@@ -206,7 +206,7 @@
                         <!-- Entry for (c) -->
                         <div class="table-controls">
                             <div class="table-title" onclick="toggleTable('tableC')">c) Participation./Innovative – Learning Modules</div>
-                            <button class="remove-table-button" onclick="removeTable('tableC')">Remove Table</button>
+                            <button class="remove-table-button" onclick="removeTable('tableC')">Show/Hide Table</button>
                         </div>
                         <table id="tableC" class="hide" border="1">
                             <thead>
@@ -233,7 +233,7 @@
                         <!-- Entry for (d) -->
                         <div class="table-controls">
                             <div class="table-title" onclick="toggleTable('tableD')">d) Participation. /Innovative – Case Studies prepared:</div>
-                            <button class="remove-table-button" onclick="removeTable('tableD')">Remove Table</button>
+                            <button class="remove-table-button" onclick="removeTable('tableD')">Show/Hide Table</button>
                         </div>
                         <table id="tableD" class="hide"  border="1">
                             <thead>
@@ -260,7 +260,7 @@
                         <!-- Entry for (e) -->
                         <div class="table-controls">
                             <div class="table-title" onclick="toggleTable('tableE')">e) Use of ICT or Computer-aided methods – ppt:</div>
-                            <button class="remove-table-button" onclick="removeTable('tableE')">Remove Table</button>
+                            <button class="remove-table-button" onclick="removeTable('tableE')">Show/Hide Table</button>
                         </div>
                         <table id="tableE" class="hide"  border="1">
                             <thead>
@@ -287,7 +287,7 @@
                         <!-- Entry for (f) -->
                         <div class="table-controls">
                             <div class="table-title" onclick="toggleTable('tableF')">f) Use of ICT – Multi-media/Simulation etc:</div>
-                            <button class="remove-table-button" onclick="removeTable('tableF')">Remove Table</button>
+                            <button class="remove-table-button" onclick="removeTable('tableF')">Show/Hide Table</button>
                         </div>
                         <table id="tableF" class="hide"  border="1">
                             <thead>
@@ -314,7 +314,7 @@
                         <!-- Entry for (g) -->
                         <div class="table-controls">
                             <div class="table-title" onclick="toggleTable('tableG')">g) Dev/Teaching Remedial/Bridge Courses:</div>
-                            <button class="remove-table-button" onclick="removeTable('tableG')">Remove Table</button>
+                            <button class="remove-table-button" onclick="removeTable('tableG')">Show/Hide Table</button>
                         </div>
                         <table id="tableG" class="hide"  border="1">
                             <thead>
@@ -341,7 +341,7 @@
                         <!-- Entry for (h) -->
                         <div class="table-controls">
                             <div class="table-title" onclick="toggleTable('tableH')">h) Dev/Teaching Soft skill/Communication/Personality Dev:</div>
-                            <button class="remove-table-button" onclick="removeTable('tableH')">Remove Table</button>
+                            <button class="remove-table-button" onclick="removeTable('tableH')">Show/Hide Table</button>
                         </div>
                         <table id="tableH" class="hide"  border="1">
                             <thead>
@@ -368,7 +368,7 @@
                         <!-- Entry for (i) -->
                         <div class="table-controls">
                             <div class="table-title" onclick="toggleTable('tableI')">i) Special Programs in Phys. Edn./Library:</div>
-                            <button class="remove-table-button" onclick="removeTable('tableI')">Remove Table</button>
+                            <button class="remove-table-button" onclick="removeTable('tableI')">Show/Hide Table</button>
                         </div>
                         <table id="tableI" class="hide" border="1">
                             <thead>
@@ -395,7 +395,7 @@
                         <!-- Entry for (j) -->
                         <div class="table-controls">
                             <div class="table-title" onclick="toggleTable('tableJ')">j) Innovative Composition/Creation in Music, Fine Arts, Performing Arts:</div>
-                            <button class="remove-table-button" onclick="removeTable('tableJ')">Remove Table</button>
+                            <button class="remove-table-button" onclick="removeTable('tableJ')">Show/Hide Table</button>
                         </div>
                         <table id="tableJ" class="hide" border="1">
                             <thead>
@@ -422,7 +422,7 @@
                         <!-- Entry for (k) -->
                         <div class="table-controls">
                             <div class="table-title" onclick="toggleTable('tableK')">k) Organizing & cond. of popular Programme/Teaching Web-based/E-Library/IT-assisted teaching:</div>
-                            <button class="remove-table-button" onclick="removeTable('tableK')">Remove Table</button>
+                            <button class="remove-table-button" onclick="removeTable('tableK')">Show/Hide Table</button>
                         </div>
                         <table id="tableK" class="hide"  border="1">
                             <thead>
@@ -449,7 +449,7 @@
                         <!-- Entry for (l) -->
                         <div class="table-controls">
                             <div class="table-title" onclick="toggleTable('tableL')">l) Any other Claims:</div>
-                            <button class="remove-table-button" onclick="removeTable('tableL')">Remove Table</button>
+                            <button class="remove-table-button" onclick="removeTable('tableL')">Show/Hide Table</button>
                         </div>
                         <table id="tableL" class="hide"  border="1">
                             <thead>
@@ -595,8 +595,14 @@
 
         // Function to remove a table
         function removeTable(tableId) {
-            const table = document.getElementById(tableId);
-            table.remove();
+            //const table = document.getElementById(tableId);
+            //table.remove();
+              var x = document.getElementById(tableId);
+            if (x.style.display === "none") {
+            x.style.display = "block";
+            } else { 
+            x.style.display = "none";
+            }
             updateTotalHours();
         }
 
