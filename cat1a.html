@@ -7,11 +7,20 @@
     //border: 3px solid green; 
     background-color: rgb(0, 0, 150);
   }
+              button:hover {
+            background-color: red;
+            cursor: pointer;
+        }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+
 <div class="center">
-  <button id="download-button">Download as PDF</button>
+        <button id="download-button">Download as PDF</button>
+        <button id="save-button">Save to Text File</button>
+        <button id="load-button">Load from Text File</button>
 </div>
 <table style="background-color:rgb(255,255,200); margin-left: auto; margin-right: auto;" border="10" width="800">
   <tr>
@@ -60,10 +69,7 @@
           //  line-height: 1.2;
           //  font-family: "Times New Roman", Times, serif;
           //}
-          tr {
-            page-break-inside: avoid;
-            page-break-after: auto;
-          }
+
         </style>
         <style type="text/css">
           span.f1 {
@@ -86,8 +92,7 @@
             border-collapse: collapse;
           }
 
-          td,
-          th {
+          td, th, tr {
             padding: 0.1rem;
             page-break-inside: avoid;
             page-break-after: auto;
@@ -305,48 +310,90 @@
   }
   button.addEventListener('click', generatePDF);
 </script>
-<script>
-  // Function to save data to localStorage
-  function saveData() {
-    // Save input values
-    $("input[type='number']").each(function() {
-      localStorage.setItem(this.id, $(this).val());
-    });
-    // Save contenteditable span values
-    $("span[contenteditable]").each(function() {
-      localStorage.setItem(this.id, $(this).text());
-    });
-  }
-  // Function to load data from localStorage
-  function loadData() {
-    // Load input values
-    $("input[type='number']").each(function() {
-      var value = localStorage.getItem(this.id);
-      if (value !== null) {
-        $(this).val(value);
-      }
-    });
-    // Load contenteditable span values
-    $("span[contenteditable]").each(function() {
-      var value = localStorage.getItem(this.id);
-      if (value !== null) {
-        $(this).text(value);
-      }
-    });
-  }
-  $(document).ready(function() {
-    // Load data from localStorage when the page loads
-    loadData();
-    $(".floatNumberField").change(function() {
-      $(this).val(parseFloat($(this).val()).toFixed(2));
-    });
-    // Save data to localStorage when input or span values change
-    $("input[type='number'], span[contenteditable]").on("input", function() {
-      saveData();
-    });
-  });
-  // Rest of your code...
-  // Add your generatePDF() and calculate() functions here...
+ <script>
+        // Function to save data to a text file
+        function saveDataToFile() {
+            var dataToSave = "";
+
+            // Iterate over input fields and contenteditable spans
+            var inputElements = document.querySelectorAll("input[type='number']");
+            for (var i = 0; i < inputElements.length; i++) {
+                var id = inputElements[i].id;
+                var value = inputElements[i].value;
+                dataToSave += id + ": " + value + "\n";
+            }
+
+            // Iterate over input fields and contenteditable spans
+            var inputElements = document.querySelectorAll("input[type='text']");
+            for (var i = 0; i < inputElements.length; i++) {
+                var id = inputElements[i].id;
+                var value = inputElements[i].value;
+                dataToSave += id + ": " + value + "\n";
+            }
+            var contentEditableSpans = document.querySelectorAll("span[contenteditable]");
+            for (var i = 0; i < contentEditableSpans.length; i++) {
+                var id = contentEditableSpans[i].id;
+                var value = contentEditableSpans[i].textContent;
+                dataToSave += id + ": " + value + "\n";
+            }
+
+            // Create a Blob object and trigger a download
+            var blob = new Blob([dataToSave], {
+                type: "text/plain;charset=utf-8"
+            });
+            saveAs(blob, "CAT1A.txt");
+        }
+
+        // Add event listener for the "Save" button
+        var saveButton = document.getElementById('save-button');
+        saveButton.addEventListener('click', saveDataToFile);
+
+        // Function to load data from a text file
+        function loadFileAsText() {
+            var fileInput = document.createElement('input');
+            fileInput.type = 'file';
+
+            fileInput.addEventListener('change', function () {
+                var file = fileInput.files[0];
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    var data = e.target.result;
+                    // Parse and populate the input fields and contenteditable spans here
+                    parseAndPopulateData(data);
+                };
+
+                reader.readAsText(file);
+            });
+
+            fileInput.click();
+        }
+
+        // Add event listener for the "Load Data" button
+        var loadButton = document.getElementById('load-button');
+        loadButton.addEventListener('click', loadFileAsText);
+
+        // Function to parse and populate data into the input fields and contenteditable spans
+        function parseAndPopulateData(data) {
+            var lines = data.split('\n');
+            for (var i = 0; i < lines.length; i++) {
+                var line = lines[i].trim();
+                var parts = line.split(':');
+                if (parts.length === 2) {
+                    var id = parts[0].trim();
+                    var value = parts[1].trim();
+                    var element = document.getElementById(id);
+                    if (element) {
+                        if (element.tagName === 'SPAN') {
+                            element.textContent = value;
+                        } else if (element.tagName === 'INPUT') {
+                            element.value = value;
+                        }
+                    }
+                }
+            }
+
+        }
 </script>
 <script>
   function calculate() {
