@@ -616,7 +616,7 @@
         function removeTable(tableId) {
             const table = document.getElementById(tableId);
             if (table) {
-                const confirmDelete = confirm("Are you sure you want to delete this table? You must delete blank tables (if no information is entered), only after entering data for the all other tables. Then save data to text and download as PDF.");
+                const confirmDelete = confirm("Are you sure you want to delete this table? \n(1) You should not delete any table before you save it as "text". \n(2) However, You must delete blank tables (if no information is entered) before you download as "PDF".");
                 if (confirmDelete) {
                     table.remove();
                 }
