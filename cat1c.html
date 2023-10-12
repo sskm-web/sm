@@ -800,12 +800,12 @@
         });
         const data = table.outerHTML;
         const blob = new Blob([data], {
-          type: "text/html"
+          type: "html"
         });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = "CAT1C-user-data.txt";
+        a.download = "CAT1C.save";
         a.click();
         URL.revokeObjectURL(url);
       }
@@ -813,7 +813,7 @@
       function loadTable(tableId) {
         const input = document.createElement("input");
         input.type = "file";
-        input.accept = ".txt";
+        input.accept = ".save";
         input.addEventListener("change", function(event) {
           const file = event.target.files[0];
           if (file) {
