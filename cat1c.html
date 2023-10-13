@@ -135,9 +135,7 @@
   </head>
   <body>
     <div class="center">
-      <button id="download-button">Download As PDF</button>&nbsp;
-      <button class="save-button" onclick="saveTable('container')">Save Your Input</button>&nbsp;
-      <button class="save-button" onclick="loadTable('container')">Load & Edit Saved Data</button>
+      <button id="download-button">Download As PDF</button>&nbsp; <button class="save-button" onclick="saveTable('container')">Save Your Input</button>&nbsp; <button class="save-button" onclick="loadTable('container')">Load & Edit Saved Data</button>
     </div>
     <table class="back" border="10">
       <tr>
@@ -197,18 +195,6 @@
                       <button onclick="removeRow(this)">-</button>
                     </td>
                   </tr>
-                  <tr>
-                    <td>
-                      <input type="text" placeholder="Add more rows  to enter more courses/hours or delete empty row (-)">
-                    </td>
-                    <!-- Modified to input type text -->
-                    <td>
-                      <input min="0" type="number" value="0" oninput="updateTotalHours()" />
-                    </td>
-                    <td>
-                      <button onclick="removeRow(this)">-</button>
-                    </td>
-                  </tr>
                 </tbody>
               </table>
               <!-- Entry for (b) -->
@@ -229,18 +215,6 @@
                   <tr>
                     <td>
                       <input type="text" placeholder="Enter comma seprated courses: C3, C4, C13 etc. or keywords">
-                    </td>
-                    <!-- Modified to input type text -->
-                    <td>
-                      <input min="0" type="number" value="0" oninput="updateTotalHours()" />
-                    </td>
-                    <td>
-                      <button onclick="removeRow(this)">-</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <input type="text" placeholder="You also delete complete table if no info to include, using remove table. ">
                     </td>
                     <!-- Modified to input type text -->
                     <td>
@@ -279,18 +253,6 @@
                       <button onclick="removeRow(this)">-</button>
                     </td>
                   </tr>
-                  <tr>
-                    <td>
-                      <input type="text" placeholder="Add  or remove (-) rows as per requirement with corresponding hours">
-                    </td>
-                    <!-- Modified to input type text -->
-                    <td>
-                      <input min="0" type="number" value="0" oninput="updateTotalHours()" />
-                    </td>
-                    <td>
-                      <button onclick="removeRow(this)">-</button>
-                    </td>
-                  </tr>
                 </tbody>
               </table>
               <!-- Entry for (d) -->
@@ -319,18 +281,6 @@
                       <button onclick="removeRow(this)">-</button>
                     </td>
                   </tr>
-                  <tr>
-                    <td>
-                      <input type="text" placeholder="Add  or remove (-) rows as per requirement with corresponding hours">
-                    </td>
-                    <!-- Modified to input type text -->
-                    <td>
-                      <input min="0" type="number" value="0" oninput="updateTotalHours()" />
-                    </td>
-                    <td>
-                      <button onclick="removeRow(this)">-</button>
-                    </td>
-                  </tr>
                 </tbody>
               </table>
               <!-- Entry for (e) -->
@@ -351,18 +301,6 @@
                   <tr>
                     <td>
                       <input type="text" placeholder="Enter comma seprated courses: C3, C4, C13 etc. using PPT">
-                    </td>
-                    <!-- Modified to input type text -->
-                    <td>
-                      <input min="0" type="number" value="0" oninput="updateTotalHours()" />
-                    </td>
-                    <td>
-                      <button onclick="removeRow(this)">-</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <input type="text" placeholder="Add  or remove (-) rows as per requirement with corresponding hours">
                     </td>
                     <!-- Modified to input type text -->
                     <td>
@@ -401,18 +339,6 @@
                       <button onclick="removeRow(this)">-</button>
                     </td>
                   </tr>
-                  <tr>
-                    <td>
-                      <input type="text" placeholder="Add  or remove (-) rows as per requirement with corresponding hours">
-                    </td>
-                    <!-- Modified to input type text -->
-                    <td>
-                      <input min="0" type="number" value="0" oninput="updateTotalHours()" />
-                    </td>
-                    <td>
-                      <button onclick="removeRow(this)">-</button>
-                    </td>
-                  </tr>
                 </tbody>
               </table>
               <!-- Entry for (g) -->
@@ -433,18 +359,6 @@
                   <tr>
                     <td>
                       <input type="text" placeholder="Enter comma seprated courses: C3, C4, C13 etc. or keywors">
-                    </td>
-                    <!-- Modified to input type text -->
-                    <td>
-                      <input min="0" type="number" value="0" oninput="updateTotalHours()" />
-                    </td>
-                    <td>
-                      <button onclick="removeRow(this)">-</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <input type="text" placeholder="Add or remove (-) rows as per requirement with corresponding hours">
                     </td>
                     <!-- Modified to input type text -->
                     <td>
@@ -483,18 +397,6 @@
                       <button onclick="removeRow(this)">-</button>
                     </td>
                   </tr>
-                  <tr>
-                    <td>
-                      <input type="text" placeholder="Add or remove (-) rows as per requirement with corresponding hours">
-                    </td>
-                    <!-- Modified to input type text -->
-                    <td>
-                      <input min="0" type="number" value="0" oninput="updateTotalHours()" />
-                    </td>
-                    <td>
-                      <button onclick="removeRow(this)">-</button>
-                    </td>
-                  </tr>
                 </tbody>
               </table>
               <!-- Entry for (i) -->
@@ -515,18 +417,6 @@
                   <tr>
                     <td>
                       <input type="text" placeholder="Enter comma seprated programs or keywors in Phys. Edn./Library">
-                    </td>
-                    <!-- Modified to input type text -->
-                    <td>
-                      <input min="0" type="number" value="0" oninput="updateTotalHours()" />
-                    </td>
-                    <td>
-                      <button onclick="removeRow(this)">-</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <input type="text" placeholder="Add or remove (-) rows as per requirement with corresponding hours">
                     </td>
                     <!-- Modified to input type text -->
                     <td>
@@ -565,18 +455,6 @@
                       <button onclick="removeRow(this)">-</button>
                     </td>
                   </tr>
-                  <tr>
-                    <td>
-                      <input type="text" placeholder="Add  or remove (-) rows as per requirement or delete whole table">
-                    </td>
-                    <!-- Modified to input type text -->
-                    <td>
-                      <input min="0" type="number" value="0" oninput="updateTotalHours()" />
-                    </td>
-                    <td>
-                      <button onclick="removeRow(this)">-</button>
-                    </td>
-                  </tr>
                 </tbody>
               </table>
               <!-- Entry for (k) -->
@@ -606,18 +484,6 @@
                       <button onclick="removeRow(this)">-</button>
                     </td>
                   </tr>
-                  <tr>
-                    <td>
-                      <input type="text" placeholder="Add or remove (-) rows as per requirement or delete whole table">
-                    </td>
-                    <!-- Modified to input type text -->
-                    <td>
-                      <input min="0" type="number" value="0" oninput="updateTotalHours()" />
-                    </td>
-                    <td>
-                      <button onclick="removeRow(this)">-</button>
-                    </td>
-                  </tr>
                 </tbody>
               </table>
               <!-- Entry for (l) -->
@@ -638,18 +504,6 @@
                   <tr>
                     <td>
                       <input type="text" placeholder="Enter comma seprated programs or keywors or activities carried out">
-                    </td>
-                    <!-- Modified to input type text -->
-                    <td>
-                      <input min="0" type="number" value="0" oninput="updateTotalHours()" />
-                    </td>
-                    <td>
-                      <button onclick="removeRow(this)">-</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <input type="text" placeholder="Add or remove (-) rows as per requirement or delete whole table if not required">
                     </td>
                     <!-- Modified to input type text -->
                     <td>
@@ -737,18 +591,40 @@
         const rows = table.rows;
         const lastRow = rows[rows.length - 1];
         const newRow = lastRow.cloneNode(true);
+        // Clear text input and set number input to 0
+        const textInputs = newRow.querySelectorAll('input[type="text"]');
+        textInputs.forEach((input) => {
+          input.value = '';
+        });
+        const numberInputs = newRow.querySelectorAll('input[type="number"]');
+        numberInputs.forEach((input) => {
+          input.value = '0';
+        });
+        // Set default values for placeholder divs and handle focus/blur events for text inputs
+        const placeholderInputs = newRow.querySelectorAll('input[placeholder]');
+        placeholderInputs.forEach((input) => {
+          input.addEventListener('focus', function() {
+            if (input.value === input.getAttribute('placeholder')) {
+              input.value = '';
+            }
+          });
+          input.addEventListener('blur', function() {
+            if (input.value === '') {
+              input.value = input.getAttribute('placeholder');
+            }
+          });
+        });
         table.tBodies[0].appendChild(newRow);
+        updateTotalHours();
       }
       // Function to remove a row from a table
       function removeRow(button) {
         const row = button.parentNode.parentNode;
-        row.parentNode.removeChild(row);
+        const tableBody = row.parentNode;
+        if (tableBody.querySelectorAll('tr').length > 2) {
+          tableBody.removeChild(row);
+        }
         updateTotalHours();
-      }
-      // Function to toggle the visibility of a table
-      function toggleTable(tableId) {
-        const table = document.getElementById(tableId);
-        table.classList.toggle("hide");
       }
       // Function to remove a table
       function removeTable(tableId) {
@@ -783,8 +659,6 @@
         totalHoursElement.textContent = totalHours.toFixed(2);
         calculatedAPIElement.textContent = (totalHours / 10).toFixed(2);
       }
-      // Initial call to set IDs and calculate total hours/API
-      updateTotalHours();
     </script>
     <script>
       // Function to save the table data to a text file
