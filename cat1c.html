@@ -6,6 +6,8 @@
     <title>CAT1C</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <style>
       /* Add your styles here */
       @keyframes flashText {
@@ -611,16 +613,37 @@
         updateTotalHours();
       }
       // Function to remove a table
-      function removeTable(tableId) {
-        const table = document.getElementById(tableId);
-        if (table) {
-          const confirmDelete = confirm("Are you sure you want to delete this table? \n(1) Do not delete any tables before you save your input. \n(2) You must delete the blank tables (if no information is entered) just before you Download as PDF to make your certficate cleaner and compact!");
-          if (confirmDelete) {
-            table.remove();
-          }
-        }
-        updateTotalHours();
-      }
+function removeTable(tableId) {
+    const $table = $('#' + tableId);
+
+    if ($table.length) { 
+        // Create a div for the dialog content
+        $('<div></div>')
+            .html("Are you sure you want to delete this table? <br>(1) Do not delete any tables before you save your input. <br>(2) You must delete the blank tables (if no information is entered) just before you Download as PDF to make your certificate cleaner and compact!")
+            .dialog({
+                title: 'Confirm Deletion',
+                resizable: false,
+                height: "auto",
+                width: 400,
+                modal: true,
+                buttons: {
+                    "Delete Table": function() {
+                        // if confirmed, remove table
+                        $table.remove();
+                        updateTotalHours();  // update the total hours
+                        $(this).dialog("close"); // close the dialog box
+                    },
+                    Cancel: function() {
+                        // if canceled, just close the dialog box
+                        $(this).dialog("close");
+                    }
+                }
+            });
+    } else {
+        // if no table found, you might want to alert the user or handle it
+        console.error('No table found with ID:', tableId);
+    }
+}
       // Function to calculate and update the total hours and API
       function updateTotalHours() {
         let totalHours = 0;
