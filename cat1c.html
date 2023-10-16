@@ -606,10 +606,7 @@
         if (rowCount > 3) { // We keep at least 2 rows (header and one data row)
           // Remove the last row (index is rowCount - 1)
           table.deleteRow(rowCount - 1);
-        } else {
-          // Display an alert or handle the case where there are no rows to delete
-          alert("One row must remain. Delete whole table instead!");
-        }
+        } 
         updateTotalHours();
       }
       // Function to remove a table
