@@ -520,7 +520,7 @@
       const nameInput = document.getElementById('applicantname');
       
       function generatePDF() {
-        var nameText = nameInput.textContent || '';
+        var nameText = nameInput.textContent;
         var filename = `SAR-A ${nameText}.pdf`;
         var element = document.getElementById('invoice');
         var opt = {
@@ -586,7 +586,7 @@
     <script>
       // Function to save the table data to a text file
       function saveTable(tableId) {
-        var nameText = nameInput.textContent || '';
+        var nameText = nameInput.textContent;
         const table = document.getElementById(tableId);
         const textInputs = table.querySelectorAll("input[type='text']");
         const numberInputs = table.querySelectorAll("input[type='number']");
