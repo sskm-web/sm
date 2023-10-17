@@ -518,6 +518,8 @@
       </tr>
     </table>
     <script>
+  const button = document.getElementById('download-button'); // Make sure this button exists
+
   function printContent() {
     var element = document.getElementById('invoice');
 
@@ -526,13 +528,29 @@
 
     mywindow.document.write('<html><head><title>' + document.title  + '</title>');
     // Here you can also include external stylesheets or inline styles if necessary
-    mywindow.document.write('</head><body >');
+    mywindow.document.write('</head><body>');
     mywindow.document.write(element.innerHTML); // Get the HTML content of the element
+
+    // Preserving form input's state
+    var formElements = element.querySelectorAll("input, select, textarea");
+
+    for(let i = 0; i < formElements.length; i++) {
+      // For text, email, number inputs, etc., we can directly set the value in the newly opened window
+      if(formElements[i].type !== "checkbox" && formElements[i].type !== "radio") {
+        mywindow.document.querySelectorAll("input, select, textarea")[i].value = formElements[i].value;
+      }
+      // For checkboxes and radio buttons, we need to set the checked state
+      else {
+        mywindow.document.querySelectorAll("input, select, textarea")[i].checked = formElements[i].checked;
+      }
+    }
+
     mywindow.document.write('</body></html>');
 
     mywindow.document.close(); // necessary for IE >= 10
     mywindow.focus(); // necessary for IE >= 10
 
+    // Printing the content
     mywindow.print();
     mywindow.close();
 
