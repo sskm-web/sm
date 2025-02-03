@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Basics - Study Material</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 21cm;
+            height: auto;
+            margin: auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #003366; /* Dark Blue */
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        p {
+            text-align: justify;
+            font-size: 1em;
+            line-height: 1.6;
+            color: black;
+        }
+
+        .question {
+            color: #003366; /* Dark Blue */
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-top: 20px;
+        }
+
+        .answer {
+            color: black;
+            font-size: 1em;
+        }
+
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        .content {
+            text-align: left;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <div class="question">1. Define an analog computer and a digital computer.</div>
+            <div class="answer">
+                <p><strong>Analog computer:</strong> A machine that processes continuous data by representing physical quantities (such as temperature or speed) through measurable variables (e.g., voltage).<br><strong>Example:</strong> Speedometer in a car.</p>
+                <p><strong>Digital computer:</strong> A machine that processes discrete data using binary code (0s and 1s), which are interpreted by the computer's central processing unit (CPU).<br><strong>Example:</strong> Laptop or Smartphone.</p>
+            </div>
+
+            <div class="question">2. Give an example each of an analog computer and a digital computer.</div>
+            <div class="answer">
+                <p><strong>Analog Computer:</strong> Oscilloscope (used to measure voltage signals).<br><strong>Digital Computer:</strong> Desktop computer (used for calculations and data processing).</p>
+            </div>
+
+            <div class="question">3. List the main characteristics of the computer.</div>
+            <div class="answer">
+                <p><strong>Speed:</strong> Computers can process millions of instructions per second, making them faster than manual calculations.<br><strong>Accuracy:</strong> Computers can perform calculations with high precision.<br><strong>Automation:</strong> Computers can perform tasks automatically without human intervention after being programmed.<br><strong>Storage:</strong> Computers can store vast amounts of data for future use.<br><strong>Versatility:</strong> Computers can be used for a wide range of tasks such as calculations, entertainment, and communication.</p>
+            </div>
+
+            <div class="question">4. Give two examples of first-generation computers.</div>
+            <div class="answer">
+                <p><strong>ENIAC (Electronic Numerical Integrator and Computer):</strong> Used for ballistic calculations during WWII.<br><strong>UNIVAC (Universal Automatic Computer):</strong> The first commercially successful computer, used for business applications.</p>
+            </div>
+
+            <div class="question">5. Give two examples of fifth-generation computers.</div>
+            <div class="answer">
+                <p><strong>IBM Watson:</strong> An AI-driven system used for complex problem-solving and data analysis.<br><strong>Quantum Computers:</strong> Computers that use quantum bits (qubits) to perform computations that are significantly faster than classical computers in certain tasks.</p>
+            </div>
+
+            <div class="question">6. Define a supercomputer.</div>
+            <div class="answer">
+                <p>A <strong>supercomputer</strong> is a high-performance computer used for extremely complex calculations, such as weather forecasting, scientific research, and simulations of physical processes.<br><strong>Example:</strong> The <strong>Summit</strong> supercomputer (USA), which is capable of performing over 200 quadrillion calculations per second.</p>
+            </div>
+
+            <div class="question">7. What is the meaning of volatile memory? Also, give an example of volatile memory.</div>
+            <div class="answer">
+                <p><strong>Volatile memory</strong> refers to computer memory that loses its data when the power is turned off.<br><strong>Example:</strong> RAM (Random Access Memory) is volatile because it stores temporary data that is erased when the computer is powered down.</p>
+            </div>
+
+            <div class="question">8. Define peripheral devices.</div>
+            <div class="answer">
+                <p><strong>Peripheral devices</strong> are external devices connected to a computer to enhance its functionality.<br><strong>Examples:</strong> Keyboard, Mouse, Printer, External Hard Drive.</p>
+            </div>
+
+            <div class="question">9. Explain in detail the input unit of the computer.</div>
+            <div class="answer">
+                <p>The <strong>input unit</strong> of a computer allows users to provide data to the system for processing. It consists of devices that convert data from the user into a format that the computer can understand.<br><strong>Examples:</strong>  
+                <ul>
+                    <li><strong>Keyboard:</strong> For typing text.</li>
+                    <li><strong>Mouse:</strong> For pointing and selecting items.</li>
+                    <li><strong>Scanner:</strong> For digitizing physical documents.</li>
+                </ul>
+                </p>
+            </div>
+
+            <div class="question">10. What is the purpose of the input interface?</div>
+            <div class="answer">
+                <p>The <strong>input interface</strong> connects input devices (like keyboard or mouse) to the computer, converting user data into signals that the CPU can process.</p>
+            </div>
+
+            <div class="question">11. Explain in detail the output unit of the computer.</div>
+            <div class="answer">
+                <p>The <strong>output unit</strong> of the computer displays the processed data to the user in a human-readable format. It consists of devices that convert computer data into forms that can be seen, heard, or printed.<br><strong>Examples:</strong>  
+                <ul>
+                    <li><strong>Monitor:</strong> Displays graphical output.</li>
+                    <li><strong>Printer:</strong> Produces hard copies of documents.</li>
+                    <li><strong>Speakers:</strong> Convert digital sound into audible sound.</li>
+                </ul>
+                </p>
+            </div>
+
+            <div class="question">12. What is the purpose of the output interface?</div>
+            <div class="answer">
+                <p>The <strong>output interface</strong> manages communication between the CPU and the output devices. It converts digital data from the CPU into a format that output devices can interpret and present to users (e.g., converting digital signals to analog signals for speakers).</p>
+            </div>
+
+            <div class="question">13. Name three pointing devices.</div>
+            <div class="answer">
+                <p><strong>Mouse, Trackpad (Touchpad), Stylus (for touch screens).</strong></p>
+            </div>
+
+            <div class="question">14. Describe the features of the mouse.</div>
+            <div class="answer">
+                <p>The <strong>mouse</strong> is a pointing device that typically has two or three buttons and a scroll wheel. It moves a pointer on the screen to select and interact with items. The mouse can be optical (using light) or mechanical (using a ball).</p>
+            </div>
+
+            <div class="question">15. What is the use of a barcode reader?</div>
+            <div class="answer">
+                <p>A <strong>barcode reader</strong> is used to scan printed barcodes and convert the information into digital data for processing.<br><strong>Example:</strong> Used in supermarkets to read product details and prices.</p>
+            </div>
+
+            <div class="question">16. What is the use of a plotter?</div>
+            <div class="answer">
+                <p>A <strong>plotter</strong> is used for printing vector graphics, including technical drawings, blueprints, and maps, with high precision.<br><strong>Example:</strong> Used by architects to print architectural plans.</p>
+            </div>
+
+            <div class="question">17. Define the resolution of the screen.</div>
+            <div class="answer">
+                <p><strong>Screen resolution</strong> refers to the number of pixels that can be displayed on the screen, typically represented by width × height (e.g., 1920×1080). A higher resolution means more pixels, resulting in clearer and sharper images.</p>
+            </div>
+
+            <div class="question">18. Define the refresh rate of the screen.</div>
+            <div class="answer">
+                <p><strong>Refresh rate</strong> is the number of times per second that a screen updates its image, measured in Hertz (Hz). Higher refresh rates result in smoother visuals.<br><strong>Example:</strong> A monitor with a 60Hz refresh rate updates the screen 60 times per second.</p>
+            </div>
+
+            <div class="question">19. What is a device driver?</div>
+            <div class="answer">
+                <p>A <strong>device driver</strong> is software that enables the operating system to communicate with a hardware device, enabling it to function properly.<br><strong>Example:</strong> A printer driver allows a computer to send data to a printer for printing.</p>
+            </div>
+
+            <div class="question">20. What is a device controller?</div>
+            <div class="answer">
+                <p>A <strong>device controller</strong> is a hardware component that manages the data flow between the computer’s CPU and external peripherals, ensuring smooth communication.<br><strong>Example:</strong> A disk controller that manages communication between the CPU and the hard drive.</p>
+            </div>
+
+            <div class="question">21. Is a device controller hardware or software?</div>
+            <div class="answer">
+                <p><strong>Hardware</strong></p>
+            </div>
+
+            <div class="question">22. Is a device driver hardware or software?</div>
+            <div class="answer">
+                <p><strong>Software</strong></p>
+            </div>
+
+            <div class="question">23. Differentiate between Ink-jet printers and Laser printers.</div>
+            <div class="answer">
+                <p><strong>Inkjet Printers:</strong> Uses liquid ink and is good for printing images and photos.<br><strong>Laser Printers:</strong> Uses toner powder and is faster, ideal for printing large volumes of text.</p>
+            </div>
+
+            <div class="question">24. What is system software?</div>
+            <div class="answer">
+                <p><strong>System software</strong> is a set of programs that manage computer hardware and provide a platform for running application software.<br><strong>Examples:</strong> Operating System, Device Drivers.</p>
+            </div>
+
+            <div class="question">25. Give two examples of system software.</div>
+            <div class="answer">
+                <p><strong>Windows OS, Linux</strong></p>
+            </div>
+
+            <div class="question">26. Describe the two categories of system software.</div>
+            <div class="answer">
+                <p><strong>Operating System:</strong> Manages hardware resources and provides an interface for users to interact with the computer.<br><strong>Utility Software:</strong> Performs maintenance tasks like antivirus, disk cleanup, file management tools.</p>
+            </div>
+
+            <div class="question">27. What is the need for an operating system?</div>
+            <div class="answer">
+                <p>The <strong>operating system (OS)</strong> acts as an intermediary between the hardware and software of a computer. It manages hardware resources, runs applications, and provides a user-friendly interface for interaction.</p>
+            </div>
+
+            <div class="question">28. Name any three operating systems.</div>
+            <div class="answer">
+                <p><strong>Windows, macOS, Linux</strong></p>
+            </div>
+
+            <div class="question">29. What are the uses of system utilities?</div>
+            <div class="answer">
+                <p><strong>System utilities</strong> help maintain and optimize system performance. They are used for tasks like file management, system monitoring, and security.<br><strong>Example:</strong> Disk cleanup, antivirus software.</p>
+            </div>
+
+            <div class="question">30. List any five system utilities and also list the purpose of each.</div>
+            <div class="answer">
+                <p><strong>Antivirus:</strong> Protects against malware.<br><strong>Disk Cleanup:</strong> Removes unnecessary files.<br><strong>Backup Software:</strong> Creates data backups.<br><strong>Task Manager:</strong> Monitors system performance.<br><strong>Defragmenter:</strong> Optimizes file storage.</p>
+            </div>
+
+            <div class="question">31. What is the need for programming languages?</div>
+            <div class="answer">
+                <p><strong>Programming languages</strong> enable developers to write software that can be executed by computers, defining the tasks and functions to be performed.</p>
+            </div>
+
+            <div class="question">32. Name the three categories of programming languages.</div>
+            <div class="answer">
+                <p><strong>Machine Language, Assembly Language, High-Level Language</strong></p>
+            </div>
+
+            <div class="question">33. List the key features of machine language.</div>
+            <div class="answer">
+                <p><strong>Binary code:</strong> Only uses 0s and 1s.<br><strong>Fast execution:</strong> Directly executed by the CPU.<br><strong>Difficult to write and debug.</strong></p>
+            </div>
+
+            <div class="question">34. List the key features of assembly language.</div>
+            <div class="answer">
+                <p><strong>Mnemonics:</strong> Uses readable codes for operations.<br><strong>Low-level programming:</strong> Close to hardware.<br><strong>Requires an assembler</strong> to convert to machine language.</p>
+            </div>
+
+            <div class="question">35. List the key features of high-level languages.</div>
+            <div class="answer">
+                <p><strong>Human-readable syntax</strong>: Easier to write and understand.<br><strong>Portable</strong>: Programs can run on different platforms.<br><strong>Requires a compiler or interpreter</strong> for execution.</p>
+            </div>
+
+            <div class="question">36. What are low-level languages?</div>
+            <div class="answer">
+                <p><strong>Low-level languages</strong> are programming languages that are closely related to the hardware, such as machine and assembly languages. These languages provide control over hardware operations but are more difficult to write and debug.</p>
+            </div>
+
+            <div class="question">37. Name two high-level languages.</div>
+            <div class="answer">
+                <p><strong>Python, Java</strong></p>
+            </div>
+
+            <div class="question">38. What is the use of application software? Give examples.</div>
+            <div class="answer">
+                <p><strong>Application software</strong> is used to perform specific tasks like word processing, image editing, or gaming.<br><strong>Examples:</strong> Microsoft Word (word processing), Adobe Photoshop (graphic design).</p>
+            </div>
+
+            <div class="question">39. Define: (1) Modem, and (2) NIC.</div>
+            <div class="answer">
+                <p><strong>Modem:</strong> A device that converts digital data to analog for internet access.<br><strong>NIC (Network Interface Card):</strong> A hardware component that allows a computer to connect to a network.</p>
+            </div>
+
+            <div class="question">40. Define network bandwidth.</div>
+            <div class="answer">
+                <p><strong>Network bandwidth</strong> is the maximum rate at which data can be transferred over a network, typically measured in Mbps/Gbps.</p>
+            </div>
+
+            <div class="question">41. What is the function of a web server?</div>
+            <div class="answer">
+                <p>A <strong>web server</strong> hosts websites and serves web pages to users over the internet. It processes requests from clients (browsers) and sends the appropriate data back.</p>
+            </div>
+
+            <div class="question">42. What is the use of a web browser?</div>
+            <div class="answer">
+                <p>A <strong>web browser</strong> is software that allows users to access, view, and navigate websites on the internet.<br><strong>Example:</strong> Google Chrome, Mozilla Firefox.</p>
+            </div>
+
+            <div class="question">43. Differentiate between E-mail and Chat.</div>
+            <div class="answer">
+                <p><strong>E-mail:</strong> Asynchronous communication where users send messages that may be read later.<br><strong>Chat:</strong> Real-time messaging, often for instant communication between users.</p>
+            </div>
+
+            <div class="question">44. What do you mean by guided and unguided transmission media?</div>
+            <div class="answer">
+                <p><strong>Guided transmission media</strong> involves physical cables (e.g., fiber optic, coaxial).<br><strong>Unguided transmission media</strong> involves wireless communication (e.g., radio waves, microwaves).</p>
+            </div>
+
+            <div class="question">45. Name two guided transmission media.</div>
+            <div class="answer">
+                <p><strong>Twisted Pair Cable, Fiber Optic Cable.</strong></p>
+            </div>
+
+            <div class="question">46. How is a coaxial cable different from a twisted pair cable?</div>
+            <div class="answer">
+                <p><strong>Coaxial Cable:</strong> Contains a central conductor, insulating layer, shielding, and outer cover, providing better protection against interference.<br><strong>Twisted Pair Cable:</strong> Consists of pairs of wires twisted together, providing less protection from interference compared to coaxial cables.</p>
+            </div>
+
+            <div class="question">47. What is the unit of measuring bandwidth?</div>
+            <div class="answer">
+                <p><strong>Bits per second (bps)</strong> or <strong>megabits per second (Mbps)</strong>.</p>
+            </div>
+
+            <div class="question">48. Define computer network.</div>
+            <div class="answer">
+                <p>A <strong>computer network</strong> is a system of interconnected computers that share resources and data, allowing communication between devices.</p>
+            </div>
+
+            <div class="question">49. Describe briefly the LAN, MAN, and WAN transmission technologies.</div>
+            <div class="answer">
+                <p><strong>LAN (Local Area Network):</strong> A network confined to a small geographic area, such as a home or office.<br><strong>MAN (Metropolitan Area Network):</strong> A network that spans a city or a large campus.<br><strong>WAN (Wide Area Network):</strong> A network that covers a large geographic area, like the internet.</p>
+            </div>
+
+            <div class="question">50. Name three LAN topologies.</div>
+            <div class="answer">
+                <p><strong>Star, Bus, Ring.</strong></p>
+            </div>
+
+            <div class="question">51. Explain briefly how the wireless network works.</div>
+            <div class="answer">
+                <p>A <strong>wireless network</strong> transmits data using radio waves instead of physical cables. Devices connect to the network using Wi-Fi or Bluetooth signals, allowing for mobility and convenience.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
