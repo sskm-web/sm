@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SABANG SAJANIKANTA MAHAVIDYALAYA -Student Result Search (4th SEM 2025)</title>
+<style>
+
+    body { font-family: Arial, sans-serif; background: #f6f6f6; margin: 0; padding: 0;}
+    .container { max-width: 700px; margin: 40px auto; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 3px 16px #ccc;}
+    h1 { color: #0057ad; text-align: center; margin-bottom: 24px; }
+    label { font-weight: bold; display: block; margin-top: 16px;}
+    input { width: 100%; padding: 9px; box-sizing: border-box; margin-top: 4px;}
+    button { margin-top: 20px; width: 100%; background: #0057ad; color: #fff; border: none; padding: 12px 0; border-radius: 4px; font-size: 18px; cursor: pointer;}
+    button:hover { background: #003d7c;}
+    .result { margin-top: 32px; background: #e5f3ff; padding: 18px; border-radius: 6px;}
+    .not-found { color: #c10000; margin-top: 22px;}
+    table { width: 100%; margin-top: 14px; border-collapse: collapse;}
+    th, td { text-align: left; border: 1px solid #d7e3eb; padding: 8px;}
+    th { background: #f1f9ff;}
+
+.autocomplete-list {
+    position: absolute;
+    background: #fff;
+    border: 1px solid #b9d3ef;
+    border-top: none;
+    z-index: 100;
+    max-height: 180px;
+    overflow-y: auto;
+    width: calc(100% - 22px);
+    margin-top: 2px;
+    border-radius: 0 0 6px 6px;
+}
+.autocomplete-item, .regno-item {
+    padding: 8px;
+    cursor: pointer;
+}
+.autocomplete-item:hover, .regno-item:hover {
+    background: #e3f2fd;
+}
+.autocomplete-empty, .regno-empty {
+    padding: 8px;
+    color: #aaa;
+}
+#regno-list {
+    position: absolute;
+    background: #fff;
+    border: 1px solid #b9d3ef;
+    border-radius: 0 0 6px 6px;
+    z-index: 100;
+    width: calc(100% - 22px);
+    margin-top: 2px;
+    display: none;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>SABANG SAJANIKANTA MAHAVIDYALAYA -Student Result Search (4th SEM 2025)</h1>
+<label for="fname">First Name:</label>
+<div style="position:relative">
+    <input type="text" id="fname" autocomplete="off" placeholder="Enter Your First Name" onkeyup="showSuggestions()" onblur="hideSuggestionsDelayed()" />
+    <div id="autocomplete-list" class="autocomplete-list" style="display:none"></div>
+</div>
+<label for="regNo">Registration Number:</label>
+<div style="position:relative">
+    <input type="text" id="regNo" placeholder="Enter Registration Number without year (eg. 1410000)">
+    <div id="regno-list"></div>
+</div>
+<button onclick="searchResult()">Search</button>
+<div class="result" id="result" style="display:none"></div>
+<div class="not-found" id="notfound" style="display:none">No result found for the given First Name and Registration No.</div>
+</div>
+<script>
+const studentResults = [
+  {"Name": "BHARATI DAS", "RegNo": "1410070", "Year": "2020-2021", "Category": "OB", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "181", "Percentage": "72.40", "SGPA": "8.00", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "689", "OverallPercentageSEMIIV": "68.90", "CGPASEMIIV": "7.51", "ResultClass": "I"},
+  {"Name": "SUBHANKAR BERA", "RegNo": "1410428", "Year": "2020-2021", "Category": "OB", "Gender": "M", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "193", "Percentage": "77.20", "SGPA": "8.20", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "772", "OverallPercentageSEMIIV": "77.20", "CGPASEMIIV": "8.23", "ResultClass": "I"},
+  {"Name": "UJJWAL MANDAL", "RegNo": "1410533", "Year": "2020-2021", "Category": "OB", "Gender": "M", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "197", "Percentage": "78.80", "SGPA": "8.40", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "784", "OverallPercentageSEMIIV": "78.40", "CGPASEMIIV": "8.48", "ResultClass": "I"},
+  {"Name": "TANUSRI MANA", "RegNo": "1410521", "Year": "2020-2021", "Category": "OB", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "190", "Percentage": "76.00", "SGPA": "8.20", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "743", "OverallPercentageSEMIIV": "74.30", "CGPASEMIIV": "7.98", "ResultClass": "I"},
+  {"Name": "SOMA MONDAL", "RegNo": "1410384", "Year": "2020-2021", "Category": "SC", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "180", "Percentage": "72.00", "SGPA": "7.80", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "719", "OverallPercentageSEMIIV": "71.90", "CGPASEMIIV": "7.71", "ResultClass": "I"},
+  {"Name": "TRAYEE SAMANTA", "RegNo": "1410526", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "200", "Percentage": "80.00", "SGPA": "8.60", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "755", "OverallPercentageSEMIIV": "75.50", "CGPASEMIIV": "8.15", "ResultClass": "I"},
+  {"Name": "SAHANA KHATUN", "RegNo": "VP231411115", "Year": "2023-2024", "Category": "OB", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "202", "Percentage": "80.80", "SGPA": "8.80", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "768", "OverallPercentageSEMIIV": "76.80", "CGPASEMIIV": "8.36", "ResultClass": "I"},
+  {"Name": "SUMITRA SANTRA", "RegNo": "1410466", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "194", "Percentage": "77.60", "SGPA": "8.20", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "774", "OverallPercentageSEMIIV": "77.40", "CGPASEMIIV": "8.35", "ResultClass": "I"},
+  {"Name": "RINA RANI KAR", "RegNo": "1570174", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "177", "Percentage": "70.80", "SGPA": "7.60", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "613", "OverallPercentageSEMIIV": "61.30", "CGPASEMIIV": "6.74", "ResultClass": "I"},
+  {"Name": "PHALGUNI SINGHA", "RegNo": "1570141", "Year": "2020-2021", "Category": "SC", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "135", "Percentage": "54.00", "SGPA": "5.80", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "521", "OverallPercentageSEMIIV": "52.10", "CGPASEMIIV": "5.83", "ResultClass": "II"},
+  {"Name": "CHANDRANI BARMAN", "RegNo": "1410086", "Year": "2020-2021", "Category": "SC", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "171", "Percentage": "68.40", "SGPA": "7.40", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "680", "OverallPercentageSEMIIV": "68.00", "CGPASEMIIV": "7.28", "ResultClass": "I"},
+  {"Name": "SUPRIYA MAITY", "RegNo": "1410482", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "194", "Percentage": "77.60", "SGPA": "8.60", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "771", "OverallPercentageSEMIIV": "77.10", "CGPASEMIIV": "8.39", "ResultClass": "I"},
+  {"Name": "MAMATA SANTRA", "RegNo": "1410159", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "202", "Percentage": "80.80", "SGPA": "8.80", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "774", "OverallPercentageSEMIIV": "77.40", "CGPASEMIIV": "8.42", "ResultClass": "I"},
+  {"Name": "SOMA ROUL", "RegNo": "1580056", "Year": "2020-2021", "Category": "SC", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "181", "Percentage": "72.40", "SGPA": "7.80", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "673", "OverallPercentageSEMIIV": "67.30", "CGPASEMIIV": "7.32", "ResultClass": "I"},
+  {"Name": "SUMANA BARIK", "RegNo": "1410457", "Year": "2020-2021", "Category": "OB", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "184", "Percentage": "73.60", "SGPA": "8.00", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "703", "OverallPercentageSEMIIV": "70.30", "CGPASEMIIV": "7.72", "ResultClass": "I"},
+  {"Name": "SUPRIYA PATRA", "RegNo": "VP231411114", "Year": "2023-2024", "Category": "GN", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "176", "Percentage": "70.40", "SGPA": "7.60", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "685", "OverallPercentageSEMIIV": "68.50", "CGPASEMIIV": "7.45", "ResultClass": "I"},
+  {"Name": "GOPINATH SASMAL", "RegNo": "1410105", "Year": "2020-2021", "Category": "GN", "Gender": "M", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "193", "Percentage": "77.20", "SGPA": "8.40", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "733", "OverallPercentageSEMIIV": "73.30", "CGPASEMIIV": "7.97", "ResultClass": "I"},
+  {"Name": "TANUSHRI MANNA", "RegNo": "1410520", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "190", "Percentage": "76.00", "SGPA": "8.40", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "736", "OverallPercentageSEMIIV": "73.60", "CGPASEMIIV": "8.08", "ResultClass": "I"},
+  {"Name": "BISWAJIT BERA", "RegNo": "1410059", "Year": "2019-2020", "Category": "OB", "Gender": "M", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "169", "Percentage": "67.60", "SGPA": "7.40", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "667", "OverallPercentageSEMIIV": "66.70", "CGPASEMIIV": "7.35", "ResultClass": "I"},
+  {"Name": "INDRANI SAMANTA", "RegNo": "1410113", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "175", "Percentage": "70.00", "SGPA": "7.60", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "680", "OverallPercentageSEMIIV": "68.00", "CGPASEMIIV": "7.37", "ResultClass": "I"},
+  {"Name": "DIPIKA PRADHAN", "RegNo": "1410095", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "146", "Percentage": "58.40", "SGPA": "6.20", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "584", "OverallPercentageSEMIIV": "58.40", "CGPASEMIIV": "6.45", "ResultClass": "II"},
+  {"Name": "PRITI DUTTA", "RegNo": "1410258", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "183", "Percentage": "73.20", "SGPA": "8.20", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "687", "OverallPercentageSEMIIV": "68.70", "CGPASEMIIV": "7.54", "ResultClass": "I"},
+  {"Name": "SHREYA JANA", "RegNo": "1410370", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "192", "Percentage": "76.80", "SGPA": "8.40", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "722", "OverallPercentageSEMIIV": "72.20", "CGPASEMIIV": "7.79", "ResultClass": "I"},
+  {"Name": "MOUMITA DAS", "RegNo": "1080137", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "192", "Percentage": "76.80", "SGPA": "8.20", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "728", "OverallPercentageSEMIIV": "72.80", "CGPASEMIIV": "7.86", "ResultClass": "I"},
+  {"Name": "REKHA MAITY", "RegNo": "1410297", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "192", "Percentage": "76.80", "SGPA": "8.20", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "724", "OverallPercentageSEMIIV": "72.40", "CGPASEMIIV": "7.86", "ResultClass": "I"},
+  {"Name": "SONALI RANI MAITY", "RegNo": "1410395", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "175", "Percentage": "70.00", "SGPA": "7.60", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "668", "OverallPercentageSEMIIV": "66.80", "CGPASEMIIV": "7.36", "ResultClass": "I"},
+  {"Name": "ANITA MAITY", "RegNo": "1410018", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "173", "Percentage": "69.20", "SGPA": "7.60", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "677", "OverallPercentageSEMIIV": "67.70", "CGPASEMIIV": "7.41", "ResultClass": "I"},
+  {"Name": "PRITY MONDAL", "RegNo": "1470087", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "167", "Percentage": "66.80", "SGPA": "7.20", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "647", "OverallPercentageSEMIIV": "64.70", "CGPASEMIIV": "6.98", "ResultClass": "I"},
+  {"Name": "MAMANI JANA", "RegNo": "1410157", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "191", "Percentage": "76.40", "SGPA": "8.40", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "696", "OverallPercentageSEMIIV": "69.60", "CGPASEMIIV": "7.62", "ResultClass": "I"},
+  {"Name": "MOUSUMI MATYA", "RegNo": "1410198", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "161", "Percentage": "64.40", "SGPA": "7.00", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "641", "OverallPercentageSEMIIV": "64.10", "CGPASEMIIV": "6.97", "ResultClass": "I"},
+  {"Name": "SHILA NAYEK", "RegNo": "1410365", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "159", "Percentage": "63.60", "SGPA": "6.80", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "621", "OverallPercentageSEMIIV": "62.10", "CGPASEMIIV": "6.78", "ResultClass": "I"},
+  {"Name": "MAMPI DAS", "RegNo": "1080112", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "197", "Percentage": "78.80", "SGPA": "8.60", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "714", "OverallPercentageSEMIIV": "71.40", "CGPASEMIIV": "7.74", "ResultClass": "I"},
+  {"Name": "SUBHANKAR CHOWDHURY", "RegNo": "1410429", "Year": "2020-2021", "Category": "GN", "Gender": "M", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "174", "Percentage": "69.60", "SGPA": "7.40", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "600", "OverallPercentageSEMIIV": "60.00", "CGPASEMIIV": "6.62", "ResultClass": "I"},
+  {"Name": "MAYNA SANTRA", "RegNo": "1410167", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "161", "Percentage": "64.40", "SGPA": "7.00", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "629", "OverallPercentageSEMIIV": "62.90", "CGPASEMIIV": "7.01", "ResultClass": "I"},
+  {"Name": "SANGITA BHOWMIK", "RegNo": "1410342", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "181", "Percentage": "72.40", "SGPA": "7.80", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "666", "OverallPercentageSEMIIV": "66.60", "CGPASEMIIV": "7.22", "ResultClass": "I"},
+  {"Name": "MOUSUMI PATRA", "RegNo": "1410200", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "180", "Percentage": "72.00", "SGPA": "7.60", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "680", "OverallPercentageSEMIIV": "68.00", "CGPASEMIIV": "7.27", "ResultClass": "I"},
+  {"Name": "NANDINI BANKURA", "RegNo": "1410205", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "182", "Percentage": "72.80", "SGPA": "7.80", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "704", "OverallPercentageSEMIIV": "70.40", "CGPASEMIIV": "7.60", "ResultClass": "I"},
+  {"Name": "SNAHALATA MAHAPATRA", "RegNo": "1410377", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "174", "Percentage": "69.60", "SGPA": "7.60", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "651", "OverallPercentageSEMIIV": "65.10", "CGPASEMIIV": "7.14", "ResultClass": "I"},
+  {"Name": "FALGUNI MANDAL", "RegNo": "1410097", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "181", "Percentage": "72.40", "SGPA": "8.00", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "686", "OverallPercentageSEMIIV": "68.60", "CGPASEMIIV": "7.46", "ResultClass": "I"},
+  {"Name": "SUSRITA MAITY", "RegNo": "1410510", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "153", "Percentage": "61.20", "SGPA": "6.60", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "623", "OverallPercentageSEMIIV": "62.30", "CGPASEMIIV": "6.85", "ResultClass": "I"},
+  {"Name": "RIYA PAL", "RegNo": "1410220", "Year": "2019-2020", "Category": "GN", "Gender": "F", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "165", "Percentage": "66.00", "SGPA": "7.20", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "660", "OverallPercentageSEMIIV": "66.00", "CGPASEMIIV": "7.12", "ResultClass": "I"},
+  {"Name": "SURAJIT DAS", "RegNo": "1410484", "Year": "2020-2021", "Category": "GN", "Gender": "M", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "156", "Percentage": "62.40", "SGPA": "6.80", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "569", "OverallPercentageSEMIIV": "56.90", "CGPASEMIIV": "6.22", "ResultClass": "II"},
+  {"Name": "SUBHAJIT SUR", "RegNo": "1410426", "Year": "2020-2021", "Category": "GN", "Gender": "M", "Subject": "BNG ", "TotalMarks": "250", "ObtainedMarks": "181", "Percentage": "72.40", "SGPA": "7.80", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "661", "OverallPercentageSEMIIV": "66.10", "CGPASEMIIV": "7.18", "ResultClass": "I"},
+  {"Name": "SUSMITA MANDAL", "RegNo": "1410499", "Year": "2020-2021", "Category": "SC", "Gender": "F", "Subject": "ENG ", "TotalMarks": "250", "ObtainedMarks": "147", "Percentage": "58.80", "SGPA": "6.60", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "621", "OverallPercentageSEMIIV": "62.10", "CGPASEMIIV": "6.80", "ResultClass": "I"},
+  {"Name": "PINKI MULA", "RegNo": "1410232", "Year": "2020-2021", "Category": "SC", "Gender": "F", "Subject": "ENG ", "TotalMarks": "250", "ObtainedMarks": "145", "Percentage": "58.00", "SGPA": "6.40", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "557", "OverallPercentageSEMIIV": "55.70", "CGPASEMIIV": "6.18", "ResultClass": "II"},
+  {"Name": "SAMAPTI SANKI", "RegNo": "1080255", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "ENG ", "TotalMarks": "250", "ObtainedMarks": "167", "Percentage": "66.80", "SGPA": "7.20", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "690", "OverallPercentageSEMIIV": "69.00", "CGPASEMIIV": "7.39", "ResultClass": "I"},
+  {"Name": "PIU MANNA", "RegNo": "1410237", "Year": "2020-2021", "Category": "OB", "Gender": "F", "Subject": "ENG ", "TotalMarks": "250", "ObtainedMarks": "166", "Percentage": "66.40", "SGPA": "7.20", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "642", "OverallPercentageSEMIIV": "64.20", "CGPASEMIIV": "7.03", "ResultClass": "I"},
+  {"Name": "INDRANIL HOR", "RegNo": "1350077", "Year": "2020-2021", "Category": "GN", "Gender": "M", "Subject": "ENG ", "TotalMarks": "250", "ObtainedMarks": "154", "Percentage": "61.60", "SGPA": "6.80", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "634", "OverallPercentageSEMIIV": "63.40", "CGPASEMIIV": "7.04", "ResultClass": "I"},
+  {"Name": "SUCHETA PRADHAN", "RegNo": "1080358", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "ENG ", "TotalMarks": "250", "ObtainedMarks": "184", "Percentage": "73.60", "SGPA": "8.00", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "704", "OverallPercentageSEMIIV": "70.40", "CGPASEMIIV": "7.49", "ResultClass": "I"},
+  {"Name": "PRASUN MANNA", "RegNo": "1140029", "Year": "2020-2021", "Category": "GN", "Gender": "M", "Subject": "ENG ", "TotalMarks": "250", "ObtainedMarks": "156", "Percentage": "62.40", "SGPA": "6.80", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "601", "OverallPercentageSEMIIV": "60.10", "CGPASEMIIV": "6.54", "ResultClass": "I"},
+  {"Name": "SAYANI DUTTA", "RegNo": "1410355", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "ENG ", "TotalMarks": "250", "ObtainedMarks": "175", "Percentage": "70.00", "SGPA": "7.40", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "702", "OverallPercentageSEMIIV": "70.20", "CGPASEMIIV": "7.54", "ResultClass": "I"},
+  {"Name": "BUDDHADEV HAZRA", "RegNo": "1410082", "Year": "2020-2021", "Category": "GN", "Gender": "M", "Subject": "ENG ", "TotalMarks": "250", "ObtainedMarks": "162", "Percentage": "64.80", "SGPA": "7.20", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "673", "OverallPercentageSEMIIV": "67.30", "CGPASEMIIV": "7.29", "ResultClass": "I"},
+  {"Name": "POULAMI BHUNIA", "RegNo": "1410244", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "ENG ", "TotalMarks": "250", "ObtainedMarks": "172", "Percentage": "68.80", "SGPA": "7.40", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "668", "OverallPercentageSEMIIV": "66.80", "CGPASEMIIV": "7.28", "ResultClass": "I"},
+  {"Name": "SASWATI ROUT", "RegNo": "1410352", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "ENG ", "TotalMarks": "250", "ObtainedMarks": "139", "Percentage": "55.60", "SGPA": "6.00", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "551", "OverallPercentageSEMIIV": "55.10", "CGPASEMIIV": "5.95", "ResultClass": "II"},
+  {"Name": "TAMALI RANI HATI", "RegNo": "1080410", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "ENG ", "TotalMarks": "250", "ObtainedMarks": "159", "Percentage": "63.60", "SGPA": "7.00", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "623", "OverallPercentageSEMIIV": "62.30", "CGPASEMIIV": "6.88", "ResultClass": "I"},
+  {"Name": "MANIDIPA LARU", "RegNo": "1410162", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "ENG ", "TotalMarks": "250", "ObtainedMarks": "145", "Percentage": "58.00", "SGPA": "6.20", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "573", "OverallPercentageSEMIIV": "57.30", "CGPASEMIIV": "6.27", "ResultClass": "II"},
+  {"Name": "SUCHARITA DAS ADHIKARI", "RegNo": "1410440", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "ENG ", "TotalMarks": "250", "ObtainedMarks": "147", "Percentage": "58.80", "SGPA": "6.60", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "619", "OverallPercentageSEMIIV": "61.90", "CGPASEMIIV": "6.93", "ResultClass": "I"},
+  {"Name": "LABANI DUTTA", "RegNo": "1410137", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "ENG ", "TotalMarks": "250", "ObtainedMarks": "154", "Percentage": "61.60", "SGPA": "6.80", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "610", "OverallPercentageSEMIIV": "61.00", "CGPASEMIIV": "6.85", "ResultClass": "I"},
+  {"Name": "ANUSHREE DHARA", "RegNo": "1410030", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "ENG ", "TotalMarks": "250", "ObtainedMarks": "131", "Percentage": "52.40", "SGPA": "5.80", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "543", "OverallPercentageSEMIIV": "54.30", "CGPASEMIIV": "5.97", "ResultClass": "II"},
+  {"Name": "SUNANDA MAITY", "RegNo": "1410469", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "ENG ", "TotalMarks": "250", "ObtainedMarks": "151", "Percentage": "60.40", "SGPA": "6.60", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "573", "OverallPercentageSEMIIV": "57.30", "CGPASEMIIV": "6.33", "ResultClass": "II"},
+  {"Name": "SOURAV PANDA", "RegNo": "1410355", "Year": "2018-2019", "Category": "GN", "Gender": "M", "Subject": "ENG ", "TotalMarks": "250", "ObtainedMarks": "138", "Percentage": "55.20", "SGPA": "6.20", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "517", "OverallPercentageSEMIIV": "51.70", "CGPASEMIIV": "5.86", "ResultClass": "II"},
+  {"Name": "RANJAN JANA", "RegNo": "1410294", "Year": "2020-2021", "Category": "GN", "Gender": "M", "Subject": "ENG ", "TotalMarks": "250", "ObtainedMarks": "152", "Percentage": "60.80", "SGPA": "6.60", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "587", "OverallPercentageSEMIIV": "58.70", "CGPASEMIIV": "6.45", "ResultClass": "II"},
+  {"Name": "SUNITA DAS", "RegNo": "1410471", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "ENG ", "TotalMarks": "250", "ObtainedMarks": "166", "Percentage": "66.40", "SGPA": "7.40", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "632", "OverallPercentageSEMIIV": "63.20", "CGPASEMIIV": "7.04", "ResultClass": "I"},
+  {"Name": "MOUMITA PANJA", "RegNo": "1410190", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "ENG ", "TotalMarks": "250", "ObtainedMarks": "129", "Percentage": "51.60", "SGPA": "5.80", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "575", "OverallPercentageSEMIIV": "57.50", "CGPASEMIIV": "6.27", "ResultClass": "II"},
+  {"Name": "NANDITA SASMAL", "RegNo": "1410206", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "ENG ", "TotalMarks": "250", "ObtainedMarks": "150", "Percentage": "60.00", "SGPA": "6.60", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "563", "OverallPercentageSEMIIV": "56.30", "CGPASEMIIV": "6.24", "ResultClass": "II"},
+  {"Name": "NILANJANA JANA", "RegNo": "VP231411503 ", "Year": "2023-2024", "Category": "GN", "Gender": "F", "Subject": "ENG ", "TotalMarks": "250", "ObtainedMarks": "137", "Percentage": "54.80", "SGPA": "6.20", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "529", "OverallPercentageSEMIIV": "52.90", "CGPASEMIIV": "5.88", "ResultClass": "II"},
+  {"Name": "GANGA SINGHA", "RegNo": "1570067", "Year": "2020-2021", "Category": "SC", "Gender": "F", "Subject": "SAN ", "TotalMarks": "250", "ObtainedMarks": "174", "Percentage": "69.60", "SGPA": "7.40", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "563", "OverallPercentageSEMIIV": "56.30", "CGPASEMIIV": "6.24", "ResultClass": "II"},
+  {"Name": "SOMA MAIKAP", "RegNo": "1570240", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "SAN ", "TotalMarks": "250", "ObtainedMarks": "186", "Percentage": "74.40", "SGPA": "8.20", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "639", "OverallPercentageSEMIIV": "63.90", "CGPASEMIIV": "7.03", "ResultClass": "I"},
+  {"Name": "RIYA ADAK", "RegNo": "1570177", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "SAN ", "TotalMarks": "250", "ObtainedMarks": "165", "Percentage": "66.00", "SGPA": "7.20", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "539", "OverallPercentageSEMIIV": "53.90", "CGPASEMIIV": "5.97", "ResultClass": "II"},
+  {"Name": "ANITA DAS", "RegNo": "1570013", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "SAN ", "TotalMarks": "250", "ObtainedMarks": "164", "Percentage": "65.60", "SGPA": "7.20", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "558", "OverallPercentageSEMIIV": "55.80", "CGPASEMIIV": "6.13", "ResultClass": "II"},
+  {"Name": "KUMKUM MANDAL", "RegNo": "1570081", "Year": "2020-2021", "Category": "SC", "Gender": "F", "Subject": "SAN ", "TotalMarks": "250", "ObtainedMarks": "170", "Percentage": "68.00", "SGPA": "7.20", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "539", "OverallPercentageSEMIIV": "53.90", "CGPASEMIIV": "5.94", "ResultClass": "II"},
+  {"Name": "PRATIMA RANI BARI", "RegNo": "1570154", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "SAN ", "TotalMarks": "250", "ObtainedMarks": "182", "Percentage": "72.80", "SGPA": "8.00", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "617", "OverallPercentageSEMIIV": "61.70", "CGPASEMIIV": "6.84", "ResultClass": "I"},
+  {"Name": "BIDHU BHUSAN MISHRA", "RegNo": "1410073", "Year": "2020-2021", "Category": "GN", "Gender": "M", "Subject": "SAN ", "TotalMarks": "250", "ObtainedMarks": "220", "Percentage": "88.00", "SGPA": "9.20", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "837", "OverallPercentageSEMIIV": "83.70", "CGPASEMIIV": "8.92", "ResultClass": "I"},
+  {"Name": "ALKUMA KHATUN", "RegNo": "1410005", "Year": "2020-2021", "Category": "OB", "Gender": "F", "Subject": "SAN ", "TotalMarks": "250", "ObtainedMarks": "123", "Percentage": "49.20", "SGPA": "5.60", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "433", "OverallPercentageSEMIIV": "43.30", "CGPASEMIIV": "4.99", "ResultClass": "II"},
+  {"Name": "SONALI DUTTA", "RegNo": "1410301", "Year": "2019-2020", "Category": "GN", "Gender": "F", "Subject": "SAN ", "TotalMarks": "250", "ObtainedMarks": "193", "Percentage": "77.20", "SGPA": "8.40", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "634", "OverallPercentageSEMIIV": "63.40", "CGPASEMIIV": "7.04", "ResultClass": "I"},
+  {"Name": "SUSMITA SASMAL", "RegNo": "1410507", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "SAN ", "TotalMarks": "250", "ObtainedMarks": "200", "Percentage": "80.00", "SGPA": "8.60", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "746", "OverallPercentageSEMIIV": "74.60", "CGPASEMIIV": "8.01", "ResultClass": "I"},
+  {"Name": "MALI MAITY", "RegNo": "1410152", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "SAN ", "TotalMarks": "250", "ObtainedMarks": "193", "Percentage": "77.20", "SGPA": "8.40", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "701", "OverallPercentageSEMIIV": "70.10", "CGPASEMIIV": "7.71", "ResultClass": "I"},
+  {"Name": "MOUMITA PAL", "RegNo": "1410189", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "SAN ", "TotalMarks": "250", "ObtainedMarks": "179", "Percentage": "71.60", "SGPA": "8.00", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "605", "OverallPercentageSEMIIV": "60.50", "CGPASEMIIV": "6.61", "ResultClass": "I"},
+  {"Name": "SUSMITA MANDAL", "RegNo": "1410498", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "SAN ", "TotalMarks": "250", "ObtainedMarks": "199", "Percentage": "79.60", "SGPA": "8.40", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "713", "OverallPercentageSEMIIV": "71.30", "CGPASEMIIV": "7.65", "ResultClass": "I"},
+  {"Name": "RINA ADAK", "RegNo": "1410299", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "SAN ", "TotalMarks": "250", "ObtainedMarks": "182", "Percentage": "72.80", "SGPA": "8.00", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "633", "OverallPercentageSEMIIV": "63.30", "CGPASEMIIV": "6.94", "ResultClass": "I"},
+  {"Name": "PUJA SASMAL", "RegNo": "1410272", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "SAN ", "TotalMarks": "250", "ObtainedMarks": "182", "Percentage": "72.80", "SGPA": "7.80", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "650", "OverallPercentageSEMIIV": "65.00", "CGPASEMIIV": "7.09", "ResultClass": "I"},
+  {"Name": "PAPI BERA", "RegNo": "1410221", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "SAN ", "TotalMarks": "250", "ObtainedMarks": "185", "Percentage": "74.00", "SGPA": "8.00", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "656", "OverallPercentageSEMIIV": "65.60", "CGPASEMIIV": "7.24", "ResultClass": "I"},
+  {"Name": "SANGITA BARMAN", "RegNo": "1350698", "Year": "2020-2021", "Category": "SC", "Gender": "F", "Subject": "CEM ", "TotalMarks": "300", "ObtainedMarks": "237", "Percentage": "79.00", "SGPA": "8.33", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "911", "OverallPercentageSEMIIV": "75.92", "CGPASEMIIV": "8.13", "ResultClass": "I"},
+  {"Name": "CHANDAN SAMANTA", "RegNo": "1350648", "Year": "2020-2021", "Category": "GN", "Gender": "M", "Subject": "CEM ", "TotalMarks": "300", "ObtainedMarks": "258", "Percentage": "86.00", "SGPA": "9.00", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "1040", "OverallPercentageSEMIIV": "86.67", "CGPASEMIIV": "9.29", "ResultClass": "I"},
+  {"Name": "AVIK MAHAPATRA", "RegNo": "1210822", "Year": "2020-2021", "Category": "GN", "Gender": "M", "Subject": "CEM ", "TotalMarks": "300", "ObtainedMarks": "252", "Percentage": "84.00", "SGPA": "9.00", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "921", "OverallPercentageSEMIIV": "76.75", "CGPASEMIIV": "8.25", "ResultClass": "I"},
+  {"Name": "SANGITA DE", "RegNo": "1390765", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BOT ", "TotalMarks": "300", "ObtainedMarks": "263", "Percentage": "87.67", "SGPA": "9.67", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "1071", "OverallPercentageSEMIIV": "89.25", "CGPASEMIIV": "9.59", "ResultClass": "I"},
+  {"Name": "MADHUMITA MAHATA", "RegNo": "1411297", "Year": "2020-2021", "Category": "OB", "Gender": "F", "Subject": "BOT ", "TotalMarks": "300", "ObtainedMarks": "220", "Percentage": "73.33", "SGPA": "8.08", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "931", "OverallPercentageSEMIIV": "77.58", "CGPASEMIIV": "8.40", "ResultClass": "I"},
+  {"Name": "PAPI PRADHAN", "RegNo": "1411323", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BOT ", "TotalMarks": "300", "ObtainedMarks": "207", "Percentage": "69.00", "SGPA": "7.50", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "890", "OverallPercentageSEMIIV": "74.17", "CGPASEMIIV": "8.04", "ResultClass": "I"},
+  {"Name": "BANASHRI NAYEK", "RegNo": "1280538", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BOT ", "TotalMarks": "300", "ObtainedMarks": "254", "Percentage": "84.67", "SGPA": "9.17", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "1047", "OverallPercentageSEMIIV": "87.25", "CGPASEMIIV": "9.38", "ResultClass": "I"},
+  {"Name": "SHYAMASHREE BERA", "RegNo": "1280543", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BOT ", "TotalMarks": "300", "ObtainedMarks": "221", "Percentage": "73.67", "SGPA": "7.92", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "934", "OverallPercentageSEMIIV": "77.83", "CGPASEMIIV": "8.34", "ResultClass": "I"},
+  {"Name": "KOUSHIK BARMAN", "RegNo": "1191022", "Year": "2020-2021", "Category": "SC", "Gender": "M", "Subject": "BOT ", "TotalMarks": "300", "ObtainedMarks": "236", "Percentage": "78.67", "SGPA": "8.42", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "901", "OverallPercentageSEMIIV": "75.08", "CGPASEMIIV": "8.21", "ResultClass": "I"},
+  {"Name": "SARASWATI GHORAI", "RegNo": "1140131", "Year": "2020-2021", "Category": "SC", "Gender": "F", "Subject": "BOT ", "TotalMarks": "300", "ObtainedMarks": "226", "Percentage": "75.33", "SGPA": "8.00", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "960", "OverallPercentageSEMIIV": "80.00", "CGPASEMIIV": "8.56", "ResultClass": "I"},
+  {"Name": "FULASHREE PRADHAN", "RegNo": "1411283", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BOT ", "TotalMarks": "300", "ObtainedMarks": "222", "Percentage": "74.00", "SGPA": "7.83", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "956", "OverallPercentageSEMIIV": "79.67", "CGPASEMIIV": "8.50", "ResultClass": "I"},
+  {"Name": "SOMA GHORAI", "RegNo": "1021644", "Year": "2020-2021", "Category": "SC", "Gender": "F", "Subject": "BOT ", "TotalMarks": "300", "ObtainedMarks": "242", "Percentage": "80.67", "SGPA": "8.75", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "947", "OverallPercentageSEMIIV": "78.92", "CGPASEMIIV": "8.56", "ResultClass": "I"},
+  {"Name": "MOUMITA HEMRAM", "RegNo": "1140123", "Year": "2020-2021", "Category": "ST", "Gender": "F", "Subject": "BOT ", "TotalMarks": "300", "ObtainedMarks": "234", "Percentage": "78.00", "SGPA": "8.17", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "929", "OverallPercentageSEMIIV": "77.42", "CGPASEMIIV": "8.32", "ResultClass": "I"},
+  {"Name": "BRAJAGOPAL BARMAN", "RegNo": "1530764", "Year": "2020-2021", "Category": "SC", "Gender": "M", "Subject": "BOT ", "TotalMarks": "300", "ObtainedMarks": "203", "Percentage": "67.67", "SGPA": "7.33", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "810", "OverallPercentageSEMIIV": "67.50", "CGPASEMIIV": "7.33", "ResultClass": "I"},
+  {"Name": "MADHURI JANA", "RegNo": "1411298", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BOT ", "TotalMarks": "300", "ObtainedMarks": "221", "Percentage": "73.67", "SGPA": "7.75", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "898", "OverallPercentageSEMIIV": "74.83", "CGPASEMIIV": "7.98", "ResultClass": "I"},
+  {"Name": "DIPSHIKHA JANA", "RegNo": "1411281", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BOT ", "TotalMarks": "300", "ObtainedMarks": "227", "Percentage": "75.67", "SGPA": "8.25", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "876", "OverallPercentageSEMIIV": "73.00", "CGPASEMIIV": "7.94", "ResultClass": "I"},
+  {"Name": "SHANTANU GHOSH", "RegNo": "1411358", "Year": "2020-2021", "Category": "OB", "Gender": "M", "Subject": "BOT ", "TotalMarks": "300", "ObtainedMarks": "219", "Percentage": "73.00", "SGPA": "7.92", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "882", "OverallPercentageSEMIIV": "73.50", "CGPASEMIIV": "7.90", "ResultClass": "I"},
+  {"Name": "BISWAJIT BERA", "RegNo": "1411271", "Year": "2020-2021", "Category": "GN", "Gender": "M", "Subject": "BOT ", "TotalMarks": "300", "ObtainedMarks": "218", "Percentage": "72.67", "SGPA": "8.08", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "867", "OverallPercentageSEMIIV": "72.25", "CGPASEMIIV": "7.90", "ResultClass": "I"},
+  {"Name": "RIYA DE", "RegNo": "1390738", "Year": "2020-2021", "Category": "GN", "Gender": "F", "Subject": "BOT ", "TotalMarks": "300", "ObtainedMarks": "232", "Percentage": "77.33", "SGPA": "8.33", "Results": "SQ", "BackCourses": "", "MarksObtainedSEMIIV": "1011", "OverallPercentageSEMIIV": "84.25", "CGPASEMIIV": "9.02", "ResultClass": "I"}
+];
+
+function showSuggestions() {
+    let input = document.getElementById('fname');
+    let val = input.value.trim().toLowerCase();
+    let suggestions = [];
+    if (val.length > 0) {
+        // Get unique first names that start with input
+        const namesSet = new Set();
+        for (const s of studentResults) {
+            const first = s.Name.split(' ')[0];
+            if (first.toLowerCase().startsWith(val)) {
+                namesSet.add(first);
+            }
+        }
+        suggestions = Array.from(namesSet).sort();
+    }
+    const list = document.getElementById('autocomplete-list');
+    list.innerHTML = '';
+    if (suggestions.length > 0) {
+        for (const s of suggestions) {
+            const item = document.createElement('div');
+            item.className = 'autocomplete-item';
+            item.innerText = s;
+            item.onclick = function() {
+                input.value = s;
+                list.style.display = 'none';
+                autofillRegNo(s); // Call new function to autofill reg no or show options
+            };
+            list.appendChild(item);
+        }
+        list.style.display = 'block';
+    } else if(val.length > 0) {
+        const empty = document.createElement('div');
+        empty.className = 'autocomplete-empty';
+        empty.innerText = 'No names found.';
+        list.appendChild(empty);
+        list.style.display = 'block';
+    } else {
+        list.style.display = 'none';
+    }
+}
+function hideSuggestionsDelayed() {
+    setTimeout(() => {
+        document.getElementById('autocomplete-list').style.display = 'none';
+    }, 150);
+}
+
+// Autofill registration number or show options
+function autofillRegNo(selectedName) {
+    const regNoInput = document.getElementById('regNo');
+    const regNoList = document.getElementById('regno-list');
+    const matches = studentResults.filter(s => s.Name.split(' ')[0] === selectedName);
+
+    if (matches.length === 1) {
+        regNoInput.value = matches[0].RegNo;
+        regNoList.style.display = 'none';
+        regNoInput.focus();
+    } else if (matches.length > 1) {
+        regNoList.innerHTML = '';
+        for (const s of matches) {
+            const item = document.createElement('div');
+            item.className = 'regno-item';
+            item.innerText = `${s.RegNo} (${s.Name})`;
+            item.onclick = function() {
+                regNoInput.value = s.RegNo;
+                regNoList.style.display = 'none';
+                regNoInput.focus();
+            };
+            regNoList.appendChild(item);
+        }
+        regNoList.style.display = 'block';
+    } else {
+        regNoList.innerHTML = '<div class="regno-empty">No registrations found.</div>';
+        regNoList.style.display = 'block';
+    }
+}
+
+function searchResult() {
+    const fname = document.getElementById('fname').value.trim().toLowerCase();
+    const regNo = document.getElementById('regNo').value.trim();
+    document.getElementById('result').style.display = 'none';
+    document.getElementById('notfound').style.display = 'none';
+
+    if (!fname || !regNo) {
+        document.getElementById('notfound').innerText = "Please enter both First Name and Registration No.";
+        document.getElementById('notfound').style.display = 'block';
+        return;
+    }
+    const match = studentResults.find(student => {
+        const firstName = student.Name.split(' ')[0].toLowerCase();
+        return firstName === fname && student.RegNo === regNo;
+    });
+    if (match) {
+        let html = `<h3>Result for ${match.Name}</h3>
+        <table>
+        <tr><th>Reg. No.</th><td>${match.RegNo}</td></tr>
+        <tr><th>Year</th><td>${match.Year}</td></tr>
+        <tr><th>Category</th><td>${match.Category}</td></tr>
+        <tr><th>Gender</th><td>${match.Gender}</td></tr>
+        <tr><th>Subject</th><td>${match.Subject}</td></tr>
+        <tr><th>Total Marks</th><td>${match.TotalMarks}</td></tr>
+        <tr><th>Obtained Marks</th><td>${match.ObtainedMarks}</td></tr>
+        <tr><th>% of Marks</th><td>${match.Percentage}</td></tr>
+        <tr><th>SGPA</th><td>${match.SGPA}</td></tr>
+        <tr><th>Result</th><td>${match.Results}</td></tr>
+        <tr><th>Back Courses</th><td>${match.BackCourses || '-'}</td></tr>
+        <tr><th>Marks Obtained (SEMI-IV)</th><td>${match.MarksObtainedSEMIIV}</td></tr>
+        <tr><th>Overall % (SEMI-IV)</th><td>${match.OverallPercentageSEMIIV}</td></tr>
+        <tr><th>CGPA (SEMI-IV)</th><td>${match.CGPASEMIIV}</td></tr>
+        <tr><th>Result Class</th><td>${match.ResultClass}</td></tr>
+        </table>`;
+        document.getElementById('result').innerHTML = html;
+        document.getElementById('result').style.display = 'block';
+    } else {
+        document.getElementById('notfound').innerText =
+              "No result found for the given First Name and Registration No. If you still expect your result, check the result PDF file";
+        document.getElementById('notfound').style.display = 'block';
+    }
+}
+</script>
+</body>
+</html>
